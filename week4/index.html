@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Student Management Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+    <!-- =========================================
+         MAIN CONTAINER
+    ========================================== -->
+
+    <div class="container">
+
+
+        <!-- =====================================
+             HEADER
+        ====================================== -->
+
+        <header class="header">
+
+            <div>
+
+                <h1>Student Management</h1>
+
+                <p>
+                    Manage student records easily
+                </p>
+
+            </div>
+
+            <button
+                id="addStudentBtn"
+                class="primary-btn"
+            >
+                + Add Student
+            </button>
+
+        </header>
+
+
+
+        <!-- =====================================
+             STATISTICS
+        ====================================== -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👨‍🎓
+                </div>
+
+                <div>
+
+                    <p>Total Students</p>
+
+                    <h2 id="totalStudents">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📚
+                </div>
+
+                <div>
+
+                    <p>Total Courses</p>
+
+                    <h2 id="totalCourses">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👩‍🎓
+                </div>
+
+                <div>
+
+                    <p>Female Students</p>
+
+                    <h2 id="femaleStudents">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👨‍🎓
+                </div>
+
+                <div>
+
+                    <p>Male Students</p>
+
+                    <h2 id="maleStudents">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             SEARCH AND FILTERS
+        ====================================== -->
+
+        <section class="controls">
+
+            <div class="search-container">
+
+                <span class="search-icon">
+                    🔍
+                </span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search by name, email or roll number..."
+                >
+
+            </div>
+
+
+            <select id="courseFilter">
+
+                <option value="all">
+                    All Courses
+                </option>
+
+                <option value="CSE">
+                    CSE
+                </option>
+
+                <option value="AI/ML">
+                    AI/ML
+                </option>
+
+                <option value="ECE">
+                    ECE
+                </option>
+
+                <option value="ME">
+                    Mechanical
+                </option>
+
+                <option value="CE">
+                    Civil
+                </option>
+
+            </select>
+
+
+            <select id="genderFilter">
+
+                <option value="all">
+                    All Gender
+                </option>
+
+                <option value="Male">
+                    Male
+                </option>
+
+                <option value="Female">
+                    Female
+                </option>
+
+            </select>
+
+
+            <button
+                id="clearFiltersBtn"
+                class="secondary-btn"
+            >
+                Clear Filters
+            </button>
+
+        </section>
+
+
+
+        <!-- =====================================
+             TABLE
+        ====================================== -->
+
+        <section class="table-container">
+
+            <div class="table-header">
+
+                <div>
+
+                    <h2>Student Records</h2>
+
+                    <p id="showingText">
+                        Showing 0 students
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Roll No.</th>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>Course</th>
+
+                            <th>Year</th>
+
+                            <th>Gender</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="studentTableBody">
+
+                    </tbody>
+
+                </table>
+
+
+                <!-- Empty State -->
+
+                <div
+                    id="emptyState"
+                    class="empty-state"
+                >
+
+                    <div class="empty-icon">
+                        📋
+                    </div>
+
+                    <h3>
+                        No students found
+                    </h3>
+
+                    <p>
+                        Add a student or change your search filters.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+    <!-- =========================================
+         MODAL
+    ========================================== -->
+
+    <div
+        id="studentModal"
+        class="modal hidden"
+    >
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+                <h2 id="modalTitle">
+                    Add Student
+                </h2>
+
+                <button
+                    id="closeModalBtn"
+                    class="close-btn"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <!-- FORM -->
+
+            <form id="studentForm">
+
+
+                <!-- Roll Number -->
+
+                <div class="form-group">
+
+                    <label for="rollNumber">
+                        Roll Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="rollNumber"
+                        placeholder="Enter roll number"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- Name -->
+
+                <div class="form-group">
+
+                    <label for="studentName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="studentName"
+                        placeholder="Enter full name"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label for="studentEmail">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="studentEmail"
+                        placeholder="Enter email"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- Course -->
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="studentCourse">
+                            Course
+                        </label>
+
+                        <select
+                            id="studentCourse"
+                            required
+                        >
+
+                            <option value="">
+                                Select Course
+                            </option>
+
+                            <option value="CSE">
+                                CSE
+                            </option>
+
+                            <option value="AI/ML">
+                                AI/ML
+                            </option>
+
+                            <option value="ECE">
+                                ECE
+                            </option>
+
+                            <option value="ME">
+                                Mechanical
+                            </option>
+
+                            <option value="CE">
+                                Civil
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- Year -->
+
+                    <div class="form-group">
+
+                        <label for="studentYear">
+                            Year
+                        </label>
+
+                        <select
+                            id="studentYear"
+                            required
+                        >
+
+                            <option value="">
+                                Select Year
+                            </option>
+
+                            <option value="1st">
+                                1st Year
+                            </option>
+
+                            <option value="2nd">
+                                2nd Year
+                            </option>
+
+                            <option value="3rd">
+                                3rd Year
+                            </option>
+
+                            <option value="4th">
+                                4th Year
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Gender -->
+
+                <div class="form-group">
+
+                    <label for="studentGender">
+                        Gender
+                    </label>
+
+                    <select
+                        id="studentGender"
+                        required
+                    >
+
+                        <option value="">
+                            Select Gender
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- Buttons -->
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        id="cancelBtn"
+                        class="secondary-btn"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+                        Save Student
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
